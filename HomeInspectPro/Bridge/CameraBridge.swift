@@ -3,9 +3,11 @@ import HotwireNative
 import UIKit
 
 public final class CameraBridge: BridgeComponent {
-    override class var name: String { "camera" }
+    public override class var name: String { "camera" }
 
-    override func onReceive(message: Message) {
+    private var pickerDelegate: CameraPickerDelegate?
+
+    public override func onReceive(message: Message) {
         guard message.event == "capture" else { return }
         presentCamera()
     }
@@ -14,15 +16,23 @@ public final class CameraBridge: BridgeComponent {
         guard let viewController = delegate?.destination as? UIViewController else { return }
 
         AVCaptureDevice.requestAccess(for: .video) { [weak self] granted in
+            guard let self else { return }
+
             guard granted else {
-                self?.replyWithError("Camera permission denied")
+                self.replyWithError("Camera permission denied")
                 return
             }
 
             DispatchQueue.main.async {
                 let picker = UIImagePickerController()
                 picker.sourceType = .camera
-                picker.delegate = self
+                let delegate = CameraPickerDelegate { [weak self] image in
+                    self?.replyWithImage(image)
+                } onCancel: { [weak self] in
+                    self?.replyWithError("Camera cancelled")
+                }
+                picker.delegate = delegate
+                self.pickerDelegate = delegate
                 viewController.present(picker, animated: true)
             }
         }
@@ -45,19 +55,27 @@ public final class CameraBridge: BridgeComponent {
     }
 }
 
-extension CameraBridge: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+private final class CameraPickerDelegate: NSObject, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    private let onPick: (UIImage) -> Void
+    private let onCancel: () -> Void
+
+    init(onPick: @escaping (UIImage) -> Void, onCancel: @escaping () -> Void) {
+        self.onPick = onPick
+        self.onCancel = onCancel
+    }
+
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
         picker.dismiss(animated: true)
 
         if let image = info[.originalImage] as? UIImage {
-            replyWithImage(image)
+            onPick(image)
         } else {
-            replyWithError("No image captured")
+            onCancel()
         }
     }
 
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         picker.dismiss(animated: true)
-        replyWithError("Camera cancelled")
+        onCancel()
     }
 }
