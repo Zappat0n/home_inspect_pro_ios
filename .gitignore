@@ -1,0 +1,22 @@
+# Xcode
+build/
+DerivedData/
+*.xcuserdata
+*.xcworkspace/xcuserdata/
+*.xcworkspace/xcshareddata/IDEWorkspaceChecks.plist
+*.xcodeproj/xcuserdata/
+*.xcodeproj/project.xcworkspace/xcuserdata/
+*.xcscmblueprint
+
+# SPM
+.swiftpm/
+Package.resolved
+
+# CocoaPods
+Pods/
+
+# Fastlane
+fastlane/report.xml
+
+# macOS
+.DS_Store

@@ -1,0 +1,14 @@
+{
+  "settings": {
+    "modal_form_follow_redirects": true,
+    "strada_component": "form"
+  },
+  "rules": [
+    {
+      "patterns": [".*"],
+      "properties": {
+        "presentation": "default"
+      }
+    }
+  ]
+}
