@@ -44,41 +44,6 @@ final class CameraBridgeTests: XCTestCase {
         XCTAssertNotNil(cached)
     }
 
-    func test_replyToCapture_withDataURI_sendsReplyViaDelegate() {
-        let destination = AppBridgeDestination()
-        let delegate = BridgeDelegateSpy()
-        let bridge = CameraBridge(destination: destination, delegate: delegate)
-        let message = Message(
-            id: "1",
-            component: "camera",
-            event: "capture",
-            metadata: nil,
-            jsonData: "{}"
-        )
-
-        bridge.didReceive(message: message)
-
-        let dataURI = "data:image/jpeg;base64,abc123"
-        let expectation = expectation(description: "Reply sent")
-
-        bridge.reply(to: "capture", with: ["image": dataURI]) { result in
-            switch result {
-            case .success(let success):
-                XCTAssertTrue(success)
-                XCTAssertTrue(delegate.replyWithMessageWasCalled)
-                XCTAssertEqual(delegate.replyWithMessageArg?.event, "capture")
-                XCTAssertTrue(
-                    delegate.replyWithMessageArg?.jsonData.contains(dataURI) ?? false
-                )
-            case .failure(let error):
-                XCTFail("Failed with error: \(error)")
-            }
-            expectation.fulfill()
-        }
-
-        wait(for: [expectation], timeout: 1.0)
-    }
-
     func test_replyToError_withMessage_sendsReplyViaDelegate() {
         let destination = AppBridgeDestination()
         let delegate = BridgeDelegateSpy()

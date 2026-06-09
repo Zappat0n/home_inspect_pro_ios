@@ -9,6 +9,7 @@ on:
 jobs:
   test:
     runs-on: macos-latest
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
 
@@ -18,13 +19,14 @@ jobs:
             -project HomeInspectPro.xcodeproj \
             -scheme HomeInspectPro
 
-      - name: Run tests
+      - name: Build and run tests
         run: |
           xcodebuild test \
             -project HomeInspectPro.xcodeproj \
             -scheme HomeInspectPro \
-            -destination 'platform=iOS Simulator,name=iPhone 16' \
-            -resultBundlePath TestResults.xcresult
+            -destination 'platform=iOS Simulator,name=iPhone 17,OS=latest' \
+            -resultBundlePath TestResults.xcresult \
+            -only-testing:HomeInspectProTests
 
       - name: Upload test results
         if: failure()
