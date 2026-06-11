@@ -23,6 +23,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         Hotwire.registerBridgeComponents([
             CameraBridge.self,
+            SignatureBridge.self,
         ])
 
         Hotwire.config.backButtonDisplayMode = .minimal
