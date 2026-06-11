@@ -14,6 +14,10 @@ public final class CameraBridge: BridgeComponent {
 
     private func presentCamera() {
         guard let viewController = delegate?.destination as? UIViewController else { return }
+        guard UIImagePickerController.isSourceTypeAvailable(.camera) else {
+            replyWithError("Camera not available")
+            return
+        }
 
         AVCaptureDevice.requestAccess(for: .video) { [weak self] granted in
             guard let self else { return }

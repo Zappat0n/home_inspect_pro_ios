@@ -19,6 +19,7 @@
 		A1B2C3D401000007 /* SignatureBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D402000008 /* SignatureBridge.swift */; };
 		TSTBUILD000000004 /* SignatureBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D402000008 /* SignatureBridge.swift */; };
 		TSTBUILD000000005 /* SignatureBridgeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = TSTFILEREF00000003 /* SignatureBridgeTests.swift */; };
+		A1B2C3D401000008 /* path-configuration.json in Resources */ = {isa = PBXBuildFile; fileRef = A1B2C3D402000009 /* path-configuration.json */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,6 +35,7 @@
 		TSTPRODREF0000001 /* HomeInspectProTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HomeInspectProTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A1B2C3D402000008 /* SignatureBridge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignatureBridge.swift; sourceTree = "<group>"; };
 		TSTFILEREF00000003 /* SignatureBridgeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignatureBridgeTests.swift; sourceTree = "<group>"; };
+		A1B2C3D402000009 /* path-configuration.json */ = {isa = PBXFileReference; lastKnownFileType = file.json; path = "path-configuration.json"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -72,6 +74,7 @@
 				A1B2C3D406000003 /* Bridge */,
 				A1B2C3D402000004 /* Assets.xcassets */,
 				A1B2C3D406000004 /* Base.lproj */,
+				A1B2C3D402000009 /* path-configuration.json */,
 				A1B2C3D402000006 /* Info.plist */,
 			);
 			path = HomeInspectPro;
@@ -203,6 +206,7 @@
 			files = (
 				A1B2C3D401000004 /* Assets.xcassets in Resources */,
 				A1B2C3D401000005 /* LaunchScreen.storyboard in Resources */,
+				A1B2C3D401000008 /* path-configuration.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -1,0 +1,65 @@
+# frozen_string_literal: true
+
+default_platform :ios
+
+platform :ios do
+  desc "Build and run tests"
+  lane :test do
+    scan(
+      scheme: "HomeInspectPro",
+      devices: ["iPhone 17"],
+      only_testing: "HomeInspectProTests",
+      result_bundle: true
+    )
+  end
+
+  desc "Build for TestFlight distribution"
+  lane :beta do
+    increment_build_number(
+      build_number: latest_testflight_build_number + 1,
+    )
+    match(type: "appstore")
+    build_app(
+      scheme: "HomeInspectPro",
+      export_method: "app-store",
+      export_options: {
+        method: "app-store",
+        provisioningProfiles: {
+          "com.homeinspectpro.app" => "match AppStore com.homeinspectpro.app"
+        }
+      }
+    )
+    upload_to_testflight(
+      skip_waiting_for_build_processing: true
+    )
+  end
+
+  desc "Submit a new version to App Store"
+  lane :release do
+    match(type: "appstore")
+    build_app(
+      scheme: "HomeInspectPro",
+      export_method: "app-store",
+      export_options: {
+        method: "app-store",
+        provisioningProfiles: {
+          "com.homeinspectpro.app" => "match AppStore com.homeinspectpro.app"
+        }
+      }
+    )
+    upload_to_app_store(
+      skip_metadata: false,
+      skip_screenshots: false,
+      force: true
+    )
+  end
+
+  desc "Take screenshots for App Store"
+  lane :screenshots do
+    capture_screenshots(
+      scheme: "HomeInspectPro",
+      output_directory: "fastlane/screenshots",
+      languages: ["en-US", "es-ES"]
+    )
+  end
+end

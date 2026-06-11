@@ -1,0 +1,38 @@
+name: iOS Deploy
+
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  testflight:
+    runs-on: macos-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.3"
+          bundler-cache: true
+
+      - name: Resolve SPM dependencies
+        run: |
+          xcodebuild -resolvePackageDependencies \
+            -project HomeInspectPro.xcodeproj \
+            -scheme HomeInspectPro
+
+      - name: Build and upload to TestFlight
+        env:
+          APPLE_ID: ${{ secrets.APPLE_ID }}
+          APP_ID_PASSWORD: ${{ secrets.APP_ID_PASSWORD }}
+          ITC_TEAM_ID: ${{ secrets.ITC_TEAM_ID }}
+          TEAM_ID: ${{ secrets.TEAM_ID }}
+          MATCH_GIT_URL: ${{ secrets.MATCH_GIT_URL }}
+          MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
+          FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD: ${{ secrets.APP_ID_PASSWORD }}
+          FASTLANE_PASSWORD: ${{ secrets.APPLE_ID_PASSWORD }}
+        run: |
+          bundle exec fastlane beta
